@@ -43,12 +43,13 @@ public class Ventanas extends JFrame {
 
         btnNewButton_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	
                 btnNewButton_1.setEnabled(false);
-
                 EventQueue.invokeLater(new Runnable() {
                     public void run() {
                         Ventanas2 frame = new Ventanas2(Ventanas.this);
                         frame.setVisible(true);
+                       
                     }
                 });
             }

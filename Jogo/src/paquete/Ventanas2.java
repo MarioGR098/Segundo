@@ -26,7 +26,7 @@ public class Ventanas2 extends JFrame {
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-
+        parentVentana.setEnabled(false);
         JButton btnNewButton_2 = new JButton("volver");
         contentPane.add(btnNewButton_2);
 
@@ -34,6 +34,7 @@ public class Ventanas2 extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 parentVentana.btnNewButton_1.setEnabled(true);
+                parentVentana.setEnabled(true);
             }
         });
     }
