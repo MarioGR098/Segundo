@@ -147,7 +147,7 @@ public class Calculadora extends JFrame {
         setFocusable(true);
         requestFocus();
     }
-
+//Gracias ChatGPT por solucionarme los espacios entre los numeros y los operadores
     private void evaluarExpresion() {
         try {
             // Agregar espacios alrededor de los operadores si no están presentes
