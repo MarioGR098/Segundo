@@ -14,7 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.border.EmptyBorder;
 
 public class Calculadora extends JFrame {
 
@@ -45,10 +44,10 @@ public class Calculadora extends JFrame {
 
         textArea = new JTextArea();
         textArea.setFont(new Font("Arial", Font.PLAIN, 24));
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        contentPane.add(scrollPane, BorderLayout.NORTH);
 
-        JPanel botones = new JPanel(new GridLayout(5, 4)); 
+        contentPane.add(textArea, BorderLayout.NORTH);
+
+        JPanel botones = new JPanel(new GridLayout(5, 4));
         JButton Boton1 = new JButton("1");
         JButton Boton2 = new JButton("2");
         JButton Boton3 = new JButton("3");
@@ -58,7 +57,7 @@ public class Calculadora extends JFrame {
         JButton Boton7 = new JButton("7");
         JButton Boton8 = new JButton("8");
         JButton Boton9 = new JButton("9");
-        JButton Boton0 = new JButton("0"); 
+        JButton Boton0 = new JButton("0");
         JButton Botonmenos = new JButton("-");
         JButton Botonmas = new JButton("+");
         JButton Botonpor = new JButton("*");
@@ -84,8 +83,7 @@ public class Calculadora extends JFrame {
         botones.add(Botonigual);
         botones.add(BotonC);
 
-       
-        ActionListener numeroActionListener = new ActionListener() {
+        ActionListener teclaActionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JButton clickedButton = (JButton) e.getSource();
                 String buttonText = clickedButton.getText();
@@ -94,18 +92,17 @@ public class Calculadora extends JFrame {
             }
         };
 
-        Boton1.addActionListener(numeroActionListener);
-        Boton2.addActionListener(numeroActionListener);
-        Boton3.addActionListener(numeroActionListener);
-        Boton4.addActionListener(numeroActionListener);
-        Boton5.addActionListener(numeroActionListener);
-        Boton6.addActionListener(numeroActionListener);
-        Boton7.addActionListener(numeroActionListener);
-        Boton8.addActionListener(numeroActionListener);
-        Boton9.addActionListener(numeroActionListener);
-        Boton0.addActionListener(numeroActionListener); 
+        Boton1.addActionListener(teclaActionListener);
+        Boton2.addActionListener(teclaActionListener);
+        Boton3.addActionListener(teclaActionListener);
+        Boton4.addActionListener(teclaActionListener);
+        Boton5.addActionListener(teclaActionListener);
+        Boton6.addActionListener(teclaActionListener);
+        Boton7.addActionListener(teclaActionListener);
+        Boton8.addActionListener(teclaActionListener);
+        Boton9.addActionListener(teclaActionListener);
+        Boton0.addActionListener(teclaActionListener);
 
-       
         ActionListener operadorActionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JButton clickedButton = (JButton) e.getSource();
@@ -122,28 +119,7 @@ public class Calculadora extends JFrame {
 
         Botonigual.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    String[] partes = entrada.split(" ");
-                    double resultado = Double.parseDouble(partes[0]);
-                    for (int i = 1; i < partes.length; i += 2) {
-                        String operador = partes[i];
-                        double operando = Double.parseDouble(partes[i + 1]);
-                        if (operador.equals("+")) {
-                            resultado += operando;
-                        } else if (operador.equals("-")) {
-                            resultado -= operando;
-                        } else if (operador.equals("*")) {
-                            resultado *= operando;
-                        } else if (operador.equals("/")) {
-                            resultado /= operando;
-                        }
-                    }
-                    entrada = Double.toString(resultado);
-                    textArea.setText(entrada);
-                } catch (Exception ex) {
-                    entrada = "Error";
-                    textArea.setText(entrada);
-                }
+                evaluarExpresion();
             }
         });
 
@@ -154,17 +130,54 @@ public class Calculadora extends JFrame {
             }
         });
 
+        // Agregar un KeyListener para capturar todas las pulsaciones de teclas
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
                 char keyChar = e.getKeyChar();
-                entrada += keyChar;
-                textArea.setText(entrada);
+                if (Character.isDigit(keyChar) || "+-*/".indexOf(keyChar) != -1) {
+                    entrada += keyChar;
+                    textArea.setText(entrada);
+                } else if (e.getKeyChar() == '\n') {
+                    evaluarExpresion();
+                }
             }
         });
 
         setFocusable(true);
         requestFocus();
     }
+
+    private void evaluarExpresion() {
+        try {
+            // Agregar espacios alrededor de los operadores si no están presentes
+            if (!entrada.contains(" ")) {
+                entrada = entrada.replace("+", " + ").replace("-", " - ")
+                        .replace("*", " * ").replace("/", " / ");
+            }
+            
+            String[] partes = entrada.split(" ");
+            double resultado = Double.parseDouble(partes[0]);
+            for (int i = 1; i < partes.length; i += 2) {
+                String operador = partes[i];
+                double operando = Double.parseDouble(partes[i + 1]);
+                if (operador.equals("+")) {
+                    resultado += operando;
+                } else if (operador.equals("-")) {
+                    resultado -= operando;
+                } else if (operador.equals("*")) {
+                    resultado *= operando;
+                } else if (operador.equals("/")) {
+                    resultado /= operando;
+                }
+            }
+            entrada = Double.toString(resultado);
+            textArea.setText(entrada);
+        } catch (Exception ex) {
+            entrada = "Error";
+            textArea.setText(entrada);
+        }
+    }
 }
+
 
