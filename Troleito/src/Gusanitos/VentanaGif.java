@@ -29,8 +29,8 @@ public class VentanaGif extends JFrame {
 
         // Generar coordenadas aleatorias para la ventana
         Random rand = new Random();
-        int x = rand.nextInt(800); // Cambia 800 según el ancho de tu pantalla
-        int y = rand.nextInt(600); // Cambia 600 según la altura de tu pantalla
+        int x = rand.nextInt(800); 
+        int y = rand.nextInt(600); 
         setLocation(x, y);
 
         JPanel contentPane = new JPanel();
